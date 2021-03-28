@@ -8,5 +8,6 @@ type (
 		GetDBUser() string
 		GetDBPassword() string
 		GetDBName() string
+		GetServerPort() string
 	}
 )
