@@ -2,7 +2,11 @@ package main
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
+
+	"github.com/tkyatg/rental_redy_backend/adapter/env"
+	"github.com/tkyatg/rental_redy_backend/adapter/sql"
 )
 
 type Result struct {
@@ -10,6 +14,13 @@ type Result struct {
 }
 
 func main() {
+	env := env.NewEnv()
+	dbConnection, err := sql.NewGormConnection(env.GetDBUser(), env.GetDBPassword(), env.GetDBName(), env.GetDBHost(), env.GetDBPort())
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer dbConnection.Close()
+
 	http.HandleFunc("/", handler)
 	http.ListenAndServe(":8080", nil)
 }
