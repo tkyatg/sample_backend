@@ -21,7 +21,6 @@ type (
 // NewServer はインスタンスを生成します
 func NewServer(port string, dbConnection *gorm.DB) *server {
 	echoServer := NewEchoServer(dbConnection)
-
 	return &server{
 		port,
 		echoServer,
