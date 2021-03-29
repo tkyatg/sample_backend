@@ -22,7 +22,7 @@ func (da *dataAccessor) getUserList() ([]getUserListResult, error) {
 
 func (da *dataAccessor) getUserByID(userUUID string) (getUserByIDResult, error) {
 	var user getUserByIDResult
-	if result := da.db.Select("user_uuid, display_name, gender, image_url, free_time, self_introduction, created_at, updated_at, deleted_at").Where("user_uuid = ?", userUUID).Find(&user); result.Error != nil {
+	if result := da.db.Table("users").Select("user_uuid, display_name, gender, image_url, free_time, self_introduction, created_at, updated_at, deleted_at").Where("user_uuid = ?", userUUID).Find(&user); result.Error != nil {
 		return getUserByIDResult{}, result.Error
 	}
 	return user, nil
