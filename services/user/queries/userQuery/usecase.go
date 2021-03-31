@@ -1,4 +1,4 @@
-package userqueryservice
+package userquery
 
 type (
 	usecase struct {

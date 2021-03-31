@@ -1,4 +1,4 @@
-package userqueryservice
+package userquery
 
 import (
 	"bytes"

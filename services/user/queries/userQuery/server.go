@@ -1,4 +1,4 @@
-package userqueryservice
+package userquery
 
 import (
 	"net/http"
@@ -21,19 +21,19 @@ func NewServer(e *echo.Echo, us Usecase) {
 	e.GET("/users/:uuid", server.GetUserByID)
 }
 
-func (s *server) GetUserList(etx echo.Context) error {
+func (s *server) GetUserList(e echo.Context) error {
 	users, err := s.uc.getUserList()
 	if err != nil {
-		return etx.JSON(http.StatusNotFound, shared.NewResponseError(err.Error()))
+		return e.JSON(http.StatusNotFound, shared.NewResponseError(err.Error()))
 	}
-	return etx.JSON(http.StatusOK, users)
+	return e.JSON(http.StatusOK, users)
 }
 
-func (s *server) GetUserByID(etx echo.Context) error {
-	userUUID := etx.Param("uuid")
+func (s *server) GetUserByID(e echo.Context) error {
+	userUUID := e.Param("uuid")
 	user, err := s.uc.getUserByID(userUUID)
 	if err != nil {
-		return etx.JSON(http.StatusNotFound, shared.NewResponseError(err.Error()))
+		return e.JSON(http.StatusNotFound, shared.NewResponseError(err.Error()))
 	}
-	return etx.JSON(http.StatusOK, user)
+	return e.JSON(http.StatusOK, user)
 }

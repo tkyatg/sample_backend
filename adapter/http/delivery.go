@@ -3,21 +3,16 @@ package http
 import (
 	"github.com/jinzhu/gorm"
 	"github.com/labstack/echo"
-	authenticationcommand "github.com/tkyatg/rental_redy_backend/services/auth/commands/authenticationCommand"
-	userqueryservice "github.com/tkyatg/rental_redy_backend/services/user/queries/userQueryService"
+	userquery "github.com/tkyatg/rental_redy_backend/services/user/queries/userQuery"
 )
 
 func NewEchoServer(dbConnection *gorm.DB) *echo.Echo {
 	echo := echo.New()
 
 	// userQueryService
-	userQueryServiceDa := userqueryservice.NewDataAccessor(dbConnection)
-	userQueryServiceUc := userqueryservice.NewUsecase(userQueryServiceDa)
-	userqueryservice.NewServer(echo, userQueryServiceUc)
-
-	// authenticationCommand
-	authenticationCommandUc := authenticationcommand.NewUsecase()
-	authenticationcommand.NewServer(echo, authenticationCommandUc)
+	userQueryDataAccessor := userquery.NewDataAccessor(dbConnection)
+	userQueryUsecase := userquery.NewUsecase(userQueryDataAccessor)
+	userquery.NewServer(echo, userQueryUsecase)
 
 	return echo
 }

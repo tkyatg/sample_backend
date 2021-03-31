@@ -9,6 +9,6 @@ migrate:
 gen-mock:
 	mockgen -source shared/env.go -destination shared/env_mock.go -package shared
 	# mockgen -source auth/commands/authenticationCommand/usecase.go -destination auth/commands/authenticationCommand/usecase_mock.go -package authenticationcommand
-	mockgen -source services/user/queries/userQueryService/usecase.go -destination services/user/queries/userQueryService/usecase_mock.go -package userqueryservice
+	mockgen -source services/user/queries/userQuery/usecase.go -destination services/user/queries/userQuery/usecase_mock.go -package userquery
 test:
 	go test -race -covermode=atomic ./... -test.v
