@@ -28,6 +28,3 @@ COMMENT ON COLUMN users.created_at IS '作成日時です';
 COMMENT ON COLUMN users.updated_at IS '更新日時です';
 COMMENT ON COLUMN users.deleted_at IS '削除日時です';
 COMMENT ON CONSTRAINT users_pkey ON users IS 'PK制約です';
-
-INSERT INTO users(user_uuid, display_name, email, "password", telephone_number, gender, created_at, updated_at)
-VALUES(gen_random_uuid(), 'name', 'email', 'password', 'number', 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
