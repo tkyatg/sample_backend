@@ -1,37 +1,60 @@
 package userquery
 
 import (
-	"errors"
-
-	"github.com/jinzhu/gorm"
+	"database/sql"
 )
 
 type dataAccessor struct {
-	db *gorm.DB
+	db *sql.DB
 }
 
 // NewDataAccessor function
-func NewDataAccessor(db *gorm.DB) DataAccessor {
+func NewDataAccessor(db *sql.DB) DataAccessor {
 	return &dataAccessor{db}
 }
-func (da *dataAccessor) getUserList() ([]getUserListResult, error) {
-	var res []getUserListResult
-	if result := da.db.Table("users").Select("user_uuid, display_name, gender, image_url, free_time, self_introduction, created_at, updated_at").Find(&res); result.Error != nil {
-		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
-			return []getUserListResult{}, nil
-		}
-		return nil, result.Error
+func (t *dataAccessor) getUserList() ([]getUserListResult, error) {
+	sql := `select user_uuid
+	, display_name
+	, gender
+	, image_url
+	, free_time
+	, self_introduction
+	, created_at
+	, updated_at
+ from users
+where deleted_at is null`
+
+	rows, err := t.db.Query(sql)
+	if err != nil {
+		return nil, err
 	}
+
+	var res []getUserListResult
+	for rows.Next() {
+		user := getUserListResult{}
+		rows.Scan(&user.UserUUID, &user.DisplayName, &user.Gender, &user.ImageURL, &user.FreeTime, &user.SelfIntroduction, &user.CreatedAt, &user.UpdatedAt)
+		res = append(res, user)
+	}
+
 	return res, nil
 }
 
-func (da *dataAccessor) getUserByID(userUUID string) (getUserByIDResult, error) {
+func (t *dataAccessor) getUserByID(req getUserByIDRequest) (getUserByIDResult, error) {
 	res := getUserByIDResult{}
-	if result := da.db.Table("users").Select("user_uuid, display_name, gender, image_url, free_time, self_introduction, created_at, updated_at, deleted_at").Where("user_uuid = ?", userUUID).Find(&res); result.Error != nil {
-		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
-			return getUserByIDResult{}, nil
-		}
-		return getUserByIDResult{}, result.Error
+
+	sql := `select user_uuid
+	             , display_name
+				 , gender
+				 , image_url
+				 , free_time
+				 , self_introduction
+				 , created_at
+				 , updated_at
+			  from users
+			 where user_uuid = $1
+			   and deleted_at is null`
+	if err := t.db.QueryRow(sql, req.userUUID).Scan(&res.UserUUID, &res.DisplayName, &res.Gender, &res.ImageURL, &res.FreeTime, &res.SelfIntroduction, &res.CreatedAt, &res.UpdatedAt); err != nil {
+		return getUserByIDResult{}, nil
 	}
 	return res, nil
 }

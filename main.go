@@ -10,7 +10,7 @@ import (
 
 func main() {
 	env := env.NewEnv()
-	dbConnection, err := sql.NewGormConnection(env.GetDBUser(), env.GetDBPassword(), env.GetDBName(), env.GetDBHost(), env.GetDBPort())
+	dbConnection, err := sql.NewDBConnection(env.GetDBUser(), env.GetDBPassword(), env.GetDBName(), env.GetDBHost(), env.GetDBPort())
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -48,18 +48,18 @@ func (mr *MockUsecaseMockRecorder) getUserList() *gomock.Call {
 }
 
 // getUserByID mocks base method
-func (m *MockUsecase) getUserByID(userUUID string) (getUserByIDResult, error) {
+func (m *MockUsecase) getUserByID(req getUserByIDRequest) (getUserByIDResult, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "getUserByID", userUUID)
+	ret := m.ctrl.Call(m, "getUserByID", req)
 	ret0, _ := ret[0].(getUserByIDResult)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // getUserByID indicates an expected call of getUserByID
-func (mr *MockUsecaseMockRecorder) getUserByID(userUUID interface{}) *gomock.Call {
+func (mr *MockUsecaseMockRecorder) getUserByID(req interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "getUserByID", reflect.TypeOf((*MockUsecase)(nil).getUserByID), userUUID)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "getUserByID", reflect.TypeOf((*MockUsecase)(nil).getUserByID), req)
 }
 
 // MockDataAccessor is a mock of DataAccessor interface
@@ -101,16 +101,16 @@ func (mr *MockDataAccessorMockRecorder) getUserList() *gomock.Call {
 }
 
 // getUserByID mocks base method
-func (m *MockDataAccessor) getUserByID(userUUID string) (getUserByIDResult, error) {
+func (m *MockDataAccessor) getUserByID(req getUserByIDRequest) (getUserByIDResult, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "getUserByID", userUUID)
+	ret := m.ctrl.Call(m, "getUserByID", req)
 	ret0, _ := ret[0].(getUserByIDResult)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // getUserByID indicates an expected call of getUserByID
-func (mr *MockDataAccessorMockRecorder) getUserByID(userUUID interface{}) *gomock.Call {
+func (mr *MockDataAccessorMockRecorder) getUserByID(req interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "getUserByID", reflect.TypeOf((*MockDataAccessor)(nil).getUserByID), userUUID)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "getUserByID", reflect.TypeOf((*MockDataAccessor)(nil).getUserByID), req)
 }

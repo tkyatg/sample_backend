@@ -7,12 +7,12 @@ type (
 	// Usecase interface
 	Usecase interface {
 		getUserList() ([]getUserListResult, error)
-		getUserByID(userUUID string) (getUserByIDResult, error)
+		getUserByID(req getUserByIDRequest) (getUserByIDResult, error)
 	}
 	// DataAccessor interface
 	DataAccessor interface {
 		getUserList() ([]getUserListResult, error)
-		getUserByID(userUUID string) (getUserByIDResult, error)
+		getUserByID(req getUserByIDRequest) (getUserByIDResult, error)
 	}
 	getUserByIDResult struct {
 		UserUUID         string `gorm:"primary_key"`
@@ -46,6 +46,7 @@ func NewUsecase(da DataAccessor) Usecase {
 func (uc *usecase) getUserList() ([]getUserListResult, error) {
 	return uc.da.getUserList()
 }
-func (uc *usecase) getUserByID(userUUID string) (getUserByIDResult, error) {
-	return uc.da.getUserByID(userUUID)
+
+func (uc *usecase) getUserByID(req getUserByIDRequest) (getUserByIDResult, error) {
+	return uc.da.getUserByID(req)
 }

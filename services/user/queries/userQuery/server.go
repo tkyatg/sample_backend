@@ -11,6 +11,9 @@ type (
 	server struct {
 		uc Usecase
 	}
+	getUserByIDRequest struct {
+		userUUID string
+	}
 )
 
 func NewServer(e *echo.Echo, us Usecase) {
@@ -30,8 +33,8 @@ func (s *server) GetUserList(e echo.Context) error {
 }
 
 func (s *server) GetUserByID(e echo.Context) error {
-	userUUID := e.Param("uuid")
-	user, err := s.uc.getUserByID(userUUID)
+	req := getUserByIDRequest{userUUID: e.Param("uuid")}
+	user, err := s.uc.getUserByID(req)
 	if err != nil {
 		return e.JSON(http.StatusNotFound, shared.NewResponseError(err.Error()))
 	}

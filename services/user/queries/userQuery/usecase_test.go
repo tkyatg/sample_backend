@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	gomock "github.com/golang/mock/gomock"
+	"github.com/google/uuid"
 	"github.com/labstack/echo"
 )
 
@@ -28,6 +29,55 @@ func newUsecaseTestHelper(t *testing.T) *usecaseTestHelper {
 	return &usecaseTestHelper{t, etx, ctrl, usecase, dataAccessor}
 }
 
+func TestUsecaseGetUserByID(t *testing.T) {
+	t.Parallel()
+
+	t.Run("正常系", func(t *testing.T) {
+		t.Parallel()
+		h := newUsecaseTestHelper(t)
+		defer h.ctrl.Finish()
+		req := getUserByIDRequest{
+			userUUID: "UserUUID-01",
+		}
+
+		res := getUserByIDResult{
+			UserUUID:         "UserUUID-01",
+			DisplayName:      "DisplayName-01",
+			BirthDay:         "BirthDay-01",
+			Gender:           "Gender-01",
+			ImageURL:         "ImageURL-01",
+			FreeTime:         "FreeTime-01",
+			SelfIntroduction: "SelfIntroduction-01",
+			CreatedAt:        "CreatedAt-01",
+			UpdatedAt:        "UpdatedAt-01",
+		}
+
+		h.dataAccessor.EXPECT().getUserByID(getUserByIDRequest{userUUID: req.userUUID}).Return(res, nil)
+
+		actual, actualErr := h.usecase.getUserByID(req)
+		if actualErr != nil {
+			t.Fatal(actualErr)
+		}
+		if !reflect.DeepEqual(actual, res) {
+			t.Fatal(actual, actualErr)
+		}
+	})
+	t.Run("異常系", func(t *testing.T) {
+		t.Parallel()
+		h := newUsecaseTestHelper(t)
+		defer h.ctrl.Finish()
+		err := errors.New("error")
+		req := getUserByIDRequest{
+			userUUID: uuid.New().String(),
+		}
+
+		h.dataAccessor.EXPECT().getUserByID(req).Return(getUserByIDResult{}, err)
+
+		if _, actualErr := h.usecase.getUserByID(req); actualErr != err {
+			t.Fatal(actualErr)
+		}
+	})
+}
 func TestUsecaseGetUsers(t *testing.T) {
 	t.Parallel()
 
@@ -77,11 +127,10 @@ func TestUsecaseGetUsers(t *testing.T) {
 		defer h.ctrl.Finish()
 		err := errors.New("error")
 
-		h.dataAccessor.EXPECT().getUserList().Return([]getUserListResult{}, err)
+		h.dataAccessor.EXPECT().getUserList().Return(nil, err)
 
 		if _, actualErr := h.usecase.getUserList(); actualErr != err {
 			t.Fatal(actualErr)
 		}
 	})
-
 }

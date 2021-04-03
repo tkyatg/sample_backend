@@ -1,9 +1,9 @@
 package http
 
 import (
+	"database/sql"
 	"log"
 
-	"github.com/jinzhu/gorm"
 	"github.com/labstack/echo"
 )
 
@@ -19,7 +19,7 @@ type (
 )
 
 // NewServer はインスタンスを生成します
-func NewServer(port string, dbConnection *gorm.DB) *server {
+func NewServer(port string, dbConnection *sql.DB) *server {
 	echoServer := NewEchoServer(dbConnection)
 	return &server{
 		port,
