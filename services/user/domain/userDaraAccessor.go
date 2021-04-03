@@ -2,6 +2,7 @@ package domain
 
 import (
 	"database/sql"
+	"errors"
 )
 
 type (
@@ -17,6 +18,24 @@ func NewUserDataAccessor(
 }
 
 func (t *userDataAccessor) create(attr *CreateUserAttributes) error {
+	emailCheckSql := `
+insert into
+ users ( email
+       , password
+       , gender
+       , display )
+values ( $1
+       , $2
+       , $3
+       , false)
+`
+	alreadyExists := true
+	if err := t.db.QueryRow(emailCheckSql, attr.email).Scan(&alreadyExists); err != nil {
+		return err
+	}
+	if alreadyExists {
+		return errors.New("入力されたemailはすでに使われています。")
+	}
 	sql := `
 insert into
  users ( email

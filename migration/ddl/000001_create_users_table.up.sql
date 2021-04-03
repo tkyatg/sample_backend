@@ -25,12 +25,13 @@ CREATE TABLE IF NOT EXISTS users (
   deleted_at  TIMESTAMP,
   CONSTRAINT users_pkey PRIMARY KEY (user_uuid)
 );
+create unique index idx_mst_users_email on users using btree (email);	
 
 COMMENT ON TABLE users IS 'ユーザーを保存するためのテーブルです';
 COMMENT ON COLUMN users.user_uuid IS 'レコードを一意に識別するIDです';
 COMMENT ON COLUMN users.display_name IS '表示名です';
 COMMENT ON COLUMN users.email IS 'メールアドレスです';
-COMMENT ON COLUMN users.birthday IS 'メールアドレスです';
+COMMENT ON COLUMN users.birthday IS '誕生日です';
 COMMENT ON COLUMN users.password IS 'パスワードです';
 COMMENT ON COLUMN users.telephone_number IS '電話番号です';
 COMMENT ON COLUMN users.image_url IS 'イメージ画像です';
