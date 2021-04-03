@@ -13,16 +13,19 @@ func NewDataAccessor(db *sql.DB) DataAccessor {
 	return &dataAccessor{db}
 }
 func (t *dataAccessor) getUserList() ([]getUserListResult, error) {
-	sql := `select user_uuid
-	, display_name
-	, gender
-	, image_url
-	, free_time
-	, self_introduction
-	, created_at
-	, updated_at
- from users
-where deleted_at is null`
+	sql := `
+select user_uuid
+     , display_name
+     , gender
+     , image_url
+     , free_time
+     , self_introduction
+     , created_at
+     , updated_at
+  from users
+ where deleted_at is null
+   and display = true
+`
 
 	rows, err := t.db.Query(sql)
 	if err != nil {
@@ -41,18 +44,20 @@ where deleted_at is null`
 
 func (t *dataAccessor) getUserByID(req getUserByIDRequest) (getUserByIDResult, error) {
 	res := getUserByIDResult{}
-
-	sql := `select user_uuid
-	             , display_name
-				 , gender
-				 , image_url
-				 , free_time
-				 , self_introduction
-				 , created_at
-				 , updated_at
-			  from users
-			 where user_uuid = $1
-			   and deleted_at is null`
+	sql := `
+select user_uuid
+     , display_name
+     , gender
+     , image_url
+     , free_time
+     , self_introduction
+     , created_at
+     , updated_at
+  from users
+ where user_uuid = $1
+   and display = true
+   and deleted_at is null
+`
 	if err := t.db.QueryRow(sql, req.userUUID).Scan(&res.UserUUID, &res.DisplayName, &res.Gender, &res.ImageURL, &res.FreeTime, &res.SelfIntroduction, &res.CreatedAt, &res.UpdatedAt); err != nil {
 		return getUserByIDResult{}, nil
 	}

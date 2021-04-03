@@ -17,8 +17,16 @@ func NewUserDataAccessor(
 }
 
 func (t *userDataAccessor) create(attr *CreateUserAttributes) error {
-	sql := `insert into users ( email, password, gender, display)
-			values($1, $2, $3, false)`
+	sql := `
+insert into
+ users ( email
+       , password
+       , gender
+       , display )
+values ( $1
+	   , $2
+	   , $3
+	   , false)`
 	if _, err := t.db.Exec(sql, attr.email, attr.encryptedPassword, attr.gender); err != nil {
 		return err
 	}
