@@ -3,6 +3,8 @@ package domain
 import (
 	"errors"
 	"regexp"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 type (
@@ -53,9 +55,31 @@ func newEmail(value string) (Email, error) {
 }
 
 func newEncryptedPassword(value string) (EncryptedPassword, error) {
-	return EncryptedPassword(value), nil
+	if value == "" || len(value) < 6 {
+		return "", errors.New("passwordは6文字以上を入力してください。")
+	}
+	hash, err := bcrypt.GenerateFromPassword([]byte(value), 12)
+	if err != nil {
+		return "", err
+	}
+	return EncryptedPassword(hash), nil
 }
 
 func newGender(value string) (Gender, error) {
+	gender := []string{"男", "女"}
+	if value == "" {
+		return "", errors.New("性別を選択してください。")
+	}
+
+	exists := false
+	for _, gen := range gender {
+		if gen == value {
+			exists = true
+			break
+		}
+	}
+	if !exists {
+		return "", errors.New("性別が不正な値です。")
+	}
 	return Gender(value), nil
 }
