@@ -33,10 +33,10 @@ func (m *MockUsecase) EXPECT() *MockUsecaseMockRecorder {
 }
 
 // getUserList mocks base method
-func (m *MockUsecase) getUserList() ([]getUserListResult, error) {
+func (m *MockUsecase) getUserList() ([]*getUserListResult, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "getUserList")
-	ret0, _ := ret[0].([]getUserListResult)
+	ret0, _ := ret[0].([]*getUserListResult)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -48,10 +48,10 @@ func (mr *MockUsecaseMockRecorder) getUserList() *gomock.Call {
 }
 
 // getUserByID mocks base method
-func (m *MockUsecase) getUserByID(req getUserByIDRequest) (getUserByIDResult, error) {
+func (m *MockUsecase) getUserByID(req getUserByIDRequest) (*getUserByIDResult, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "getUserByID", req)
-	ret0, _ := ret[0].(getUserByIDResult)
+	ret0, _ := ret[0].(*getUserByIDResult)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -86,10 +86,10 @@ func (m *MockDataAccessor) EXPECT() *MockDataAccessorMockRecorder {
 }
 
 // getUserList mocks base method
-func (m *MockDataAccessor) getUserList() ([]getUserListResult, error) {
+func (m *MockDataAccessor) getUserList() ([]*getUserListResult, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "getUserList")
-	ret0, _ := ret[0].([]getUserListResult)
+	ret0, _ := ret[0].([]*getUserListResult)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -101,10 +101,10 @@ func (mr *MockDataAccessorMockRecorder) getUserList() *gomock.Call {
 }
 
 // getUserByID mocks base method
-func (m *MockDataAccessor) getUserByID(req getUserByIDRequest) (getUserByIDResult, error) {
+func (m *MockDataAccessor) getUserByID(req getUserByIDRequest) (*getUserByIDResult, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "getUserByID", req)
-	ret0, _ := ret[0].(getUserByIDResult)
+	ret0, _ := ret[0].(*getUserByIDResult)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

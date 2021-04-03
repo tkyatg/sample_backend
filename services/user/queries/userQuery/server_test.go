@@ -53,7 +53,7 @@ func TestServerGetUserByID(t *testing.T) {
 
 		userUUID := uuid.New().String()
 
-		expect := getUserByIDResult{
+		expect := &getUserByIDResult{
 			UserUUID:         "UserUUID-01",
 			DisplayName:      "DisplayName-01",
 			BirthDay:         "BirthDay-01",
@@ -88,7 +88,7 @@ func TestServerGetUserList(t *testing.T) {
 	t.Run("正常系", func(t *testing.T) {
 		t.Parallel()
 		h := newServerTestHelper(t)
-		expect := []getUserListResult{
+		expect := []*getUserListResult{
 			{
 				UserUUID:         "UserUUID-01",
 				DisplayName:      "DisplayName-01",

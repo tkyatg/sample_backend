@@ -40,7 +40,7 @@ func TestUsecaseGetUserByID(t *testing.T) {
 			userUUID: "UserUUID-01",
 		}
 
-		res := getUserByIDResult{
+		res := &getUserByIDResult{
 			UserUUID:         "UserUUID-01",
 			DisplayName:      "DisplayName-01",
 			BirthDay:         "BirthDay-01",
@@ -71,13 +71,14 @@ func TestUsecaseGetUserByID(t *testing.T) {
 			userUUID: uuid.New().String(),
 		}
 
-		h.dataAccessor.EXPECT().getUserByID(req).Return(getUserByIDResult{}, err)
+		h.dataAccessor.EXPECT().getUserByID(req).Return(nil, err)
 
 		if _, actualErr := h.usecase.getUserByID(req); actualErr != err {
 			t.Fatal(actualErr)
 		}
 	})
 }
+
 func TestUsecaseGetUsers(t *testing.T) {
 	t.Parallel()
 
@@ -86,7 +87,7 @@ func TestUsecaseGetUsers(t *testing.T) {
 		h := newUsecaseTestHelper(t)
 		defer h.ctrl.Finish()
 
-		users := []getUserListResult{
+		users := []*getUserListResult{
 			{
 				UserUUID:         "UserUUID-01",
 				DisplayName:      "DisplayName-01",

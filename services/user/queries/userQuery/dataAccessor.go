@@ -12,14 +12,14 @@ type dataAccessor struct {
 func NewDataAccessor(db *sql.DB) DataAccessor {
 	return &dataAccessor{db}
 }
-func (t *dataAccessor) getUserList() ([]getUserListResult, error) {
+func (t *dataAccessor) getUserList() ([]*getUserListResult, error) {
 	sql := `
 select user_uuid
-     , display_name
+     , coalesce(display_name, '') display_name
      , gender
-     , image_url
-     , free_time
-     , self_introduction
+     , coalesce(image_url, '') image_url
+     , coalesce(free_time, '') free_time
+     , coalesce(self_introduction, '') self_introduction
      , created_at
      , updated_at
   from users
@@ -32,9 +32,9 @@ select user_uuid
 		return nil, err
 	}
 
-	var res []getUserListResult
+	var res []*getUserListResult
 	for rows.Next() {
-		user := getUserListResult{}
+		user := new(getUserListResult)
 		rows.Scan(&user.UserUUID, &user.DisplayName, &user.Gender, &user.ImageURL, &user.FreeTime, &user.SelfIntroduction, &user.CreatedAt, &user.UpdatedAt)
 		res = append(res, user)
 	}
@@ -42,15 +42,15 @@ select user_uuid
 	return res, nil
 }
 
-func (t *dataAccessor) getUserByID(req getUserByIDRequest) (getUserByIDResult, error) {
-	res := getUserByIDResult{}
+func (t *dataAccessor) getUserByID(req getUserByIDRequest) (*getUserByIDResult, error) {
+	res := new(getUserByIDResult)
 	sql := `
 select user_uuid
-     , display_name
+     , coalesce(display_name, '') display_name
      , gender
-     , image_url
-     , free_time
-     , self_introduction
+     , coalesce(image_url, '') image_url
+     , coalesce(free_time, '') free_time
+     , coalesce(self_introduction, '') self_introduction
      , created_at
      , updated_at
   from users
@@ -59,7 +59,7 @@ select user_uuid
    and deleted_at is null
 `
 	if err := t.db.QueryRow(sql, req.userUUID).Scan(&res.UserUUID, &res.DisplayName, &res.Gender, &res.ImageURL, &res.FreeTime, &res.SelfIntroduction, &res.CreatedAt, &res.UpdatedAt); err != nil {
-		return getUserByIDResult{}, nil
+		return nil, err
 	}
 	return res, nil
 }
