@@ -27,12 +27,12 @@ func NewServer(e *echo.Echo, us Usecase) {
 func (s *server) Create(e echo.Context) error {
 	var req createRequest
 	if err := e.Bind(&req); err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, err)
+		return e.JSON(http.StatusInternalServerError, err)
 	}
 
 	err := s.uc.Create(req)
 	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, err)
+		return echo.NewHTTPError(http.StatusInternalServerError, err)
 	}
 	return e.JSON(http.StatusCreated, "ok")
 }

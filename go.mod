@@ -4,6 +4,7 @@ go 1.13
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
 	github.com/golang/mock v1.4.4
 	github.com/google/uuid v1.2.0
 	github.com/kr/pretty v0.1.0 // indirect

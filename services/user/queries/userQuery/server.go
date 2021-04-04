@@ -4,7 +4,6 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo"
-	"github.com/tkyatg/rental_redy_backend/shared"
 )
 
 type (
@@ -27,7 +26,7 @@ func NewServer(e *echo.Echo, us Usecase) {
 func (s *server) GetUserList(e echo.Context) error {
 	users, err := s.uc.getUserList()
 	if err != nil {
-		return e.JSON(http.StatusNotFound, shared.NewResponseError(err.Error()))
+		return echo.NewHTTPError(http.StatusInternalServerError, err)
 	}
 	return e.JSON(http.StatusOK, users)
 }
@@ -36,7 +35,7 @@ func (s *server) GetUserByID(e echo.Context) error {
 	req := getUserByIDRequest{userUUID: e.Param("uuid")}
 	user, err := s.uc.getUserByID(req)
 	if err != nil {
-		return e.JSON(http.StatusNotFound, shared.NewResponseError(err.Error()))
+		return echo.NewHTTPError(http.StatusInternalServerError, err)
 	}
 	return e.JSON(http.StatusOK, user)
 }

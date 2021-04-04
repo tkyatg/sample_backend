@@ -21,6 +21,7 @@ type (
 // NewServer はインスタンスを生成します
 func NewServer(port string, dbConnection *sql.DB) *server {
 	echoServer := NewEchoServer(dbConnection)
+
 	return &server{
 		port,
 		echoServer,
