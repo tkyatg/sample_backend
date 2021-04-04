@@ -11,9 +11,9 @@ type (
 		uc Usecase
 	}
 	createRequest struct {
-		Email    string
-		Password string
-		Gender   string
+		Email    string `json:"email"`
+		Password string `json:"password"`
+		Gender   string `json:"gender"`
 	}
 )
 
@@ -25,11 +25,11 @@ func NewServer(e *echo.Echo, us Usecase) {
 }
 
 func (s *server) Create(e echo.Context) error {
-	req := createRequest{
-		Email:    e.FormValue("email"),
-		Password: e.FormValue("password"),
-		Gender:   e.FormValue("gender"),
+	var req createRequest
+	if err := e.Bind(&req); err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err)
 	}
+
 	err := s.uc.Create(req)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err)

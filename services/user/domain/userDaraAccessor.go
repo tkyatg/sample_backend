@@ -19,15 +19,11 @@ func NewUserDataAccessor(
 
 func (t *userDataAccessor) create(attr *CreateUserAttributes) error {
 	emailCheckSql := `
-insert into
- users ( email
-       , password
-       , gender
-       , display )
-values ( $1
-       , $2
-       , $3
-       , false)
+select exists (
+    select 1 from users
+     where email = $1
+)
+
 `
 	alreadyExists := true
 	if err := t.db.QueryRow(emailCheckSql, attr.email).Scan(&alreadyExists); err != nil {
